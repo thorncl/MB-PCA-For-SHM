@@ -5,7 +5,7 @@ from compute_delayed import *
 from glob import glob
 
 
-class NIPALS_MBPCA:
+class mbpca:
 
     def __init__ (self, root):
 
@@ -199,24 +199,24 @@ class NIPALS_MBPCA:
     def write_checkpoint(self, model, n_components):
 
         cum_var_exp = np.reshape(model['cum_var_exp'], (n_components, self.n_partitions))
-        self.write_hdf(cum_var_exp, 'cum_var_exp')
+        self.write_model(cum_var_exp, 'cum_var_exp')
 
         residuals = np.reshape(model['residuals'], (self.n_partitions, self.n_features, self.n_rows))
-        self.write_hdf(residuals, 'residuals', stack = True)
+        self.write_model(residuals, 'residuals', stack = True)
 
         p_b = np.reshape(model['p_b'], (n_components, self.n_partitions, self.n_features))
-        self.write_hdf(p_b, 'p_b', stack = True)
+        self.write_model(p_b, 'p_b', stack = True)
 
         t_T_score = np.reshape(model['t_T_scores'], (n_components, self.n_rows))
-        self.write_hdf(t_T_score, 't_T_scores')
+        self.write_model(t_T_score, 't_T_scores')
 
         t_b = np.reshape(model['t_b'], (n_components, self.n_partitions, self.n_rows))
-        self.write_hdf(t_b, 't_b', stack = True)
+        self.write_model(t_b, 't_b', stack = True)
 
         w_T = np.reshape(model['w_T'], (n_components, self.n_partitions))
-        self.write_hdf(w_T, 'w_T')
+        self.write_model(w_T, 'w_T')
 
-    def write_hdf(self, param, param_name, stack = False):
+    def write_model(self, param, param_name, stack = False):
 
         if stack:
             param_name = param_name + '_stack'
@@ -224,3 +224,18 @@ class NIPALS_MBPCA:
             
         param_df = pd.DataFrame(param)
         param_df.to_hdf(self.root + param_name + '_ckp.h5', key = 'data', format = 'fixed')
+
+    def read_hdfs(root, read_keys) -> daskdf:
+
+        padded_files = []
+        folders = glob(root + '/sensor_data_*')
+        folders.sort()
+
+        for folder in folders:
+            key = folder.split('_', folder.count('_'))[-1]
+            
+            if key in read_keys:
+                padded_files.extend(glob(root + '/sensor_data_' + key + '/scaled_*_parallel_padded.h5'))
+
+        padded_files = sorted(padded_files, key = lambda x: (int(x.split('_')[-7]), int(x.split('_')[-5]), int(x.split('_')[-3])))
+        return daskdf.read_hdf(padded_files, key = 'data', sorted_index = True)

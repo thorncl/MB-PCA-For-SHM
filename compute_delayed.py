@@ -43,18 +43,4 @@ def compute_variance_explained(res, block) -> float:
 
     return abs(1 - (trace_residuals/trace_blocks))*100
     
-def read_hdfs(root, read_keys) -> daskdf:
-
-    padded_files = []
-    folders = glob(root + '/sensor_data_*')
-    folders.sort()
-
-    for folder in folders:
-        key = folder.split('_', folder.count('_'))[-1]
-        
-        if key in read_keys:
-            padded_files.extend(glob(root + '/sensor_data_' + key + '/scaled_*_parallel_padded.h5'))
-
-    padded_files = sorted(padded_files, key = lambda x: (int(x.split('_')[-7]), int(x.split('_')[-5]), int(x.split('_')[-3])))
-    return daskdf.read_hdf(padded_files, key = 'data', sorted_index = True)
 
