@@ -32,5 +32,6 @@ implementations for handling big data is limited, thus, a novel approach shall b
 overcome these limitations. 
 
 In the original study carried-out by Maes et. Lombaert, they employed 
-a robust PCA-based approach. The study conducted in this repository employs a consensus (multi-block) PCA approach.
+a robust PCA-based approach. The study conducted in this repository employs a consensus (multi-block) PCA approach. The dataset has been made public by the original authors of the study at:
+https://zenodo.org/records/3745914.
 
