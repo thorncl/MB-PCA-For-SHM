@@ -21,3 +21,11 @@ to modal analysis and is an effective means for which structural deficiencies ma
 The case study described herein explores a data-driven approach to vibration-based SHM for
 damage identification of the KW51 railway bridge in Leuven, Belgium.
 
+Due to the volume of data retained for analysis, it is important to note the limitations
+intrinsic to existing implementations of multi-block PCA. Specifically, existing python-based
+implementations included in the trendfitter and scikit-learn libraries are not well-equipped for
+big data and multi-block applications respectively. These limitations form the motivation for
+the second key objective in this study. That is to say, the capacity of existing python-based
+implementations for handling big data is limited, thus, a novel approach shall be taken to
+overcome these limitations.
+
