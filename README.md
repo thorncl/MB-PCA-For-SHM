@@ -17,7 +17,7 @@ of structural components with sensors (i.e., MEMS accelerometers, Fibre-Bragg Gr
 piezoelectric sensors) in the assessment of infrastructure health through analysis of the
 frequency response of such components. The non-destructive retrofitting of civil infrastructure
 and structural components with a distributed network of sensors enables a data-driven approach
-to modal analysis and is an effective means for which structural deficiencies may be identified3.
+to modal analysis and is an effective means for which structural deficiencies may be identified.
 The case study described herein explores a data-driven approach to vibration-based SHM for
 damage identification of the KW51 railway bridge in Leuven, Belgium.
 
@@ -27,5 +27,6 @@ implementations included in the trendfitter and scikit-learn libraries are not w
 big data and multi-block applications respectively. These limitations form the motivation for
 the second key objective in this study. That is to say, the capacity of existing python-based
 implementations for handling big data is limited, thus, a novel approach shall be taken to
-overcome these limitations.
+overcome these limitations. In the original study carried-out by Maes et. Lombaert, they employed 
+a robust PCA-based approach. The study conducted in this repository employs a consensus (multi-block) PCA approach.
 
